@@ -1,0 +1,133 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
+
+:root {
+  --orange: #ff5722;
+  --link: #918e9b;
+  --body: #333333;
+  --button: #03a9f4;
+  --buttonHover: #48c5ff;
+}
+
+/* reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+/* Header */
+header {
+  background-color: var(--orange);
+  height: 64px;
+  a {
+    img {
+      max-width: 100%;
+      width: 290px;
+    }
+  }
+}
+
+/* Main */
+main {
+  max-width: 600px;
+  margin: 0 auto;
+  margin-top: 2rem;
+  color: var(--body);
+}
+
+section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+h1 {
+  color: #000;
+  border-bottom: 1px solid var(--orange);
+  margin-bottom: 2rem;
+  display: inline-block;
+  font-size: 2.3rem;
+}
+
+article {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid var(--orange);
+  padding: 2rem 0;
+  gap: 1rem;
+  img {
+    height: 168px;
+    width: 126px;
+    border-radius: 5px;
+    object-fit: cover;
+  }
+  .info {
+    align-self: center;
+    .location {
+      display: flex;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.1rem;
+      gap: 0.2rem;
+      svg {
+        color: var(--orange);
+      }
+      a {
+        letter-spacing: initial;
+        text-transform: none;
+        margin-left: 1rem;
+        color: var(--link);
+      }
+    }
+    h2 {
+      font-style: bold;
+      margin-top: 0.3rem;
+      margin-bottom: 1rem;
+      font-size: 1.6rem;
+    }
+    .date {
+      font-weight: bolder;
+      font-size: 0.8rem;
+    }
+    p {
+      font-size: 0.8rem;
+      margin-top: 0.4rem;
+      line-height: 150%;
+    }
+  }
+}
+
+.new_destination {
+  background-color: var(--button);
+  color: white;
+  /* height: 48px; */
+  padding: 0.6rem 1rem;
+  border-radius: 5px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 20px;
+  letter-spacing: -1.5px;
+  margin-top: 40px;
+  border: 2px solid var(--button);
+  transition: all 0.3s;
+}
+
+.new_destination:hover {
+  background-color: var(--buttonHover);
+  border-color: var(--buttonHover);
+}
+
+.new_destination:active {
+  background-color: white;
+  color: var(--button);
+  border-color: var(--button);
+  transition: all 0s;
+}
+.new_destination:active path {
+  stroke: var(--button);
+  transition: all 0s;
+}
