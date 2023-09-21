@@ -31,7 +31,7 @@ function cloneTemplate() {
     clone.querySelector(".title").textContent = destination.title;
     clone.querySelector(
       ".date"
-    ).textContent = `${destination.departureDate} - ${destination.arrivalDate}`;
+    ).textContent = `${destination.arrivalDate} - ${destination.departureDate}`;
     clone.querySelector(".description").textContent = destination.description;
 
     // Append the cloned and updated template to the target div

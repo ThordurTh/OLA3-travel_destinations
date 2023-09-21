@@ -1,5 +1,4 @@
 const form = document.querySelector("form");
-const messageDiv = document.getElementById("message");
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -13,6 +12,9 @@ form.addEventListener("submit", (e) => {
   const image = data.get("image");
   const description = data.get("description");
 
+  const formattedArrival = dateFormatter(arrivalDate);
+  const formattedDeparture = dateFormatter(departureDate);
+
   const options = {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -20,8 +22,8 @@ form.addEventListener("submit", (e) => {
       country: country,
       title: title,
       link: link,
-      arrivalDate: arrivalDate,
-      departureDate: departureDate,
+      arrivalDate: formattedArrival,
+      departureDate: formattedDeparture,
       image: image,
       description: description,
     }),
@@ -29,7 +31,7 @@ form.addEventListener("submit", (e) => {
 
   fetch("http://localhost:3000/travel_destinations", options)
     .then((response) => {
-      console.log(response);
+      // console.log(response);
       return response.json();
     })
     .then((data) => {
@@ -43,3 +45,29 @@ form.addEventListener("submit", (e) => {
 
     .catch((err) => console.error(err));
 });
+
+function dateFormatter(date) {
+  // Convert the date string "DD,MM,YYYY" to an array of ["DD", "MM", "YYYY"]
+  const inputDate = date.split("-");
+
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nove",
+    "Dec",
+  ];
+  // Format the date as "DD month, YYYY"
+  const formattedDate = `${inputDate[2]} ${monthNames[Number(inputDate[1])]}, ${
+    inputDate[0]
+  }`;
+
+  return formattedDate;
+}
