@@ -220,7 +220,7 @@ button:hover {
 }
 
 .error-message {
-  color: red; /* Set the text color to red for error messages */
-  font-size: 14px; /* Adjust the font size as needed */
-  margin-top: 5px; /* Add some space above the error message */
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
 }
