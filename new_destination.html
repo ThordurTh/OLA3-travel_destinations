@@ -1,47 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
     <title>New Destination</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <header>
-        <a href="index.html"><img src="assets/logo.png" alt="logo" /></a>
+      <a href="index.html"><img src="assets/logo.png" alt="logo" /></a>
     </header>
     <main>
-        <section>
-            <h1>New Destination</h1>
-            <form>
-                <label for="country">Country:</label>
-                <input type="text" id="country" name="country" /><br /><br />
+      <section>
+        <h1>New Destination</h1>
+        <form>
+          <label for="country">Country *</label>
+          <input type="text" id="country" name="country" />
 
-                <label for="title">Title:</label>
-                <input type="text" id="title" name="title" /><br /><br />
+          <label for="title">Title *</label>
+          <input type="text" id="title" name="title" />
 
-                <label for="link">Link:</label>
-                <input type="url" id="link" name="link" /><br /><br />
+          <label for="link">Link</label>
+          <input type="url" id="link" name="link" />
 
-                <label for="arrival_date">Arrival Date:</label>
-                <input type="date" id="arrival_date" name="arrival_date" /><br /><br />
+          <label for="arrival_date">Arrival Date</label>
+          <input type="date" id="arrival_date" name="arrival_date" />
 
-                <label for="departure_date">Departure Date:</label>
-                <input type="date" id="departure_date" name="departure_date" /><br /><br />
+          <label for="departure_date">Departure Date</label>
+          <input type="date" id="departure_date" name="departure_date" />
 
-                <label for="image">Upload Image:</label>
-                <input type="file" id="image" name="image" accept="image/*" /><br /><br />
+          <label for="image">Upload Image</label>
+          <input type="file" id="image" name="image" accept="image/*" />
 
-                <label for="description">Description:</label><br />
-                <textarea id="description" name="description" rows="4" cols="50"></textarea><br /><br />
-
-                <input type="submit" value="Submit" />
-            </form>
-        </section>
+          <label for="description">Description</label>
+          <textarea
+            id="description"
+            name="description"
+            rows="4"
+            cols="50"
+          ></textarea>
+          <div class="buttons-wrapper">
+            <a href="#index.html">Cancel</a>
+            <button type="submit" id="submit">Save</button>
+          </div>
+        </form>
+      </section>
     </main>
     <script src="/scripts/formHandler.js"></script>
-</body>
-
+  </body>
 </html>

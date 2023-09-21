@@ -2,6 +2,7 @@
 
 :root {
   --orange: #ff5722;
+  --orange-form: #ff8a50;
   --link: #918e9b;
   --body: #333333;
   --button: #03a9f4;
@@ -132,4 +133,83 @@ p {
 .new_destination:active path {
   stroke: var(--button);
   transition: all 0s;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+input {
+  padding: 0.5rem;
+  border-radius: 5px;
+  border-top: 2px solid var(--orange-form);
+  border-left: 2px solid var(--orange-form);
+  border-right: 1px solid rgb(170, 170, 170);
+  border-bottom: 1px solid rgb(170, 170, 170);
+  background: #fff;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+input:focus {
+  border: 2px solid var(--orange-form);
+  outline: none;
+}
+
+textarea {
+  padding: 0.6rem;
+  border-radius: 5px;
+  border-top: 2px solid var(--orange-form);
+  border-left: 2px solid var(--orange-form);
+  border-right: 1px solid rgb(170, 170, 170);
+  border-bottom: 1px solid rgb(170, 170, 170);
+  background: #fff;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  outline: 0;
+  -moz-appearance: none;
+}
+
+label {
+  font-size: 0.7rem;
+  margin-left: 1rem;
+  margin-bottom: -0.8rem;
+}
+
+.buttons-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.buttons-wrapper a {
+  padding: 12px 32px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 5px;
+  background: white;
+  color: var(--button);
+  border: 2px solid var(--button);
+  text-decoration: none;
+}
+
+.buttons-wrapper a:hover {
+  color: white;
+  background-color: var(--button);
+}
+
+button {
+  padding: 12px 32px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  background: var(--button);
+  color: white;
+  border: 2px solid var(--button);
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: var(--buttonHover);
+  border-color: var(--buttonHover);
 }
