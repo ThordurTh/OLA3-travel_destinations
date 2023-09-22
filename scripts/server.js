@@ -6,8 +6,10 @@ const cors = require("cors"); // Import the cors package
 const app = express();
 const port = 3000;
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "10mb", extended: true }));
+app.use(
+  express.urlencoded({ limit: "10mb", extended: true, parameterLimit: 50000 })
+);
 
 // Configure CORS to allow requests from your HTML page's domain
 app.use(cors());

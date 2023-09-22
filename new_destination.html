@@ -16,10 +16,10 @@
         <h1>New Destination</h1>
         <form>
           <label for="country">Country *</label>
-          <input type="text" id="country" name="country" required />
+          <input type="text" id="country" name="country" />
 
           <label for="title">Title *</label>
-          <input type="text" id="title" name="title" required />
+          <input type="text" id="title" name="title" />
 
           <label for="link">Link</label>
           <input type="url" id="link" name="link" />
@@ -40,6 +40,8 @@
             rows="4"
             cols="50"
           ></textarea>
+          <p id="country-error" class="error-message"></p>
+          <p id="success-message" class="success-message"></p>
           <p id="error-message" class="error-message"></p>
           <div class="buttons-wrapper">
             <a href="/index.html">Cancel</a>
@@ -49,6 +51,5 @@
       </section>
     </main>
     <script src="/scripts/formHandler.js"></script>
-    <script src="/scripts/imageHandler.js"></script>
   </body>
 </html>

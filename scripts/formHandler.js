@@ -1,23 +1,11 @@
 const form = document.querySelector("form");
 const inputElements = document.querySelectorAll("input");
-const imageInput = document.getElementById("image");
-
-imageInput.addEventListener("change", async (e) => {
-  const file = e.target.files[0];
-
-  if (file) {
-    try {
-      const base64Image = await imageToBase64(file);
-
-      // You can now use base64Image as needed, such as sending it to your server or storing it in a JavaScript variable.
-    } catch (error) {
-      console.error(error);
-    }
-  }
-});
 
 inputElements.forEach((inputElement) => {
-  inputElement.addEventListener("change", () => {
+  inputElement.addEventListener("input", () => {
+    // Clear the error messages when the user starts typing
+    document.getElementById("country-error").textContent = "";
+
     if (inputElement.value.trim() !== "") {
       inputElement.classList.add("input-good");
     } else {
@@ -26,18 +14,7 @@ inputElements.forEach((inputElement) => {
   });
 });
 
-// Add a blur event listener to remove the class when the input loses focus
-inputElements.forEach((inputElement) => {
-  inputElement.addEventListener("blur", () => {
-    if (inputElement.value.trim() !== "") {
-      inputElement.classList.add("input-good");
-    } else {
-      inputElement.classList.remove("input-good");
-    }
-  });
-});
-
-form.addEventListener("submit", (e) => {
+form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
@@ -46,7 +23,7 @@ form.addEventListener("submit", (e) => {
   const link = data.get("link");
   const arrivalDate = data.get("arrival_date");
   const departureDate = data.get("departure_date");
-  const image = data.get("image");
+  const image = document.querySelector("#image");
   const description = data.get("description");
 
   // Transform the country to uppercase
@@ -55,49 +32,71 @@ form.addEventListener("submit", (e) => {
   // Capitalize the first letter of the title
   title = title.charAt(0).toUpperCase() + title.slice(1);
 
-  // Check if the link starts with the allowed prefixes
+  // Check if the country and title are empty
+  if (country.trim() === "" || title.trim() === "") {
+    // Display error messages for both fields
+    document.getElementById("country-error").textContent =
+      "Country is required.";
+    return; // Prevent form submission
+  }
+
+  // Check if the link starts with the allowed prefixes or if it's empty
   if (
-    !link.startsWith("https://www.google.com/maps/") &&
-    !link.startsWith("https://maps.app.goo.gl/")
+    link.trim() === "" ||
+    link.startsWith("https://www.google.com/maps/") ||
+    link.startsWith("https://maps.app.goo.gl/")
   ) {
+    // Clear any previous error message
+    document.getElementById("error-message").textContent = "";
+
+    const formattedArrival = dateFormatter(arrivalDate);
+    const formattedDeparture = dateFormatter(departureDate);
+
+    try {
+      const imageString = await imageToBase64(image.files[0]);
+
+      const options = {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+          country: country,
+          title: title,
+          link: link,
+          arrivalDate: formattedArrival,
+          departureDate: formattedDeparture,
+          image: imageString,
+          description: description,
+        }),
+      };
+
+      const response = await fetch(
+        "http://localhost:3000/travel_destinations",
+        options
+      );
+      const data = await response.json();
+
+      if (data.error) {
+      } else {
+        form.reset();
+
+        // Display a success message
+        document.getElementById("success-message").textContent =
+          "Form submitted successfully!";
+
+        // Redirect to index.html after 2 seconds
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 2000);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  } else {
+    // Display an error message if the link doesn't start with allowed prefixes
     const errorMessage = "Only Google Maps links allowed.";
     document.getElementById("error-message").textContent = errorMessage;
     return; // Prevent form submission
-  } else {
-    document.getElementById("error-message").textContent = ""; // Clear any previous error message
   }
-
-  const formattedArrival = dateFormatter(arrivalDate);
-  const formattedDeparture = dateFormatter(departureDate);
-
-  const options = {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams({
-      country: country,
-      title: title,
-      link: link,
-      arrivalDate: formattedArrival,
-      departureDate: formattedDeparture,
-      image: image,
-      description: description,
-    }),
-  };
-
-  fetch("http://localhost:3000/travel_destinations", options)
-    .then((response) => {
-      // console.log(response);
-      return response.json();
-    })
-    .then((data) => {
-      if (data.error) {
-        console.log(data.error);
-      } else {
-        console.log(data.message);
-        form.reset();
-      }
-    })
-    .catch((err) => console.error(err));
 });
 
 function dateFormatter(date) {
@@ -126,3 +125,12 @@ function dateFormatter(date) {
 
   return formattedDate;
 }
+
+// imageToBase64
+const imageToBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (e) => reject(e);
+  });

@@ -22,8 +22,7 @@ header {
   background-color: var(--orange);
   height: 64px;
 }
-header a {
-}
+
 header img {
   max-width: 100%;
   width: 290px;
@@ -221,6 +220,12 @@ button:hover {
 
 .error-message {
   color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.success-message {
+  color: green;
   font-size: 14px;
   margin-top: 5px;
 }
