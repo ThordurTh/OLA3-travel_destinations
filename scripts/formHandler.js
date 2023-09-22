@@ -1,5 +1,20 @@
 const form = document.querySelector("form");
 const inputElements = document.querySelectorAll("input");
+const imageInput = document.getElementById("image");
+
+imageInput.addEventListener("change", async (e) => {
+  const file = e.target.files[0];
+
+  if (file) {
+    try {
+      const base64Image = await imageToBase64(file);
+
+      // You can now use base64Image as needed, such as sending it to your server or storing it in a JavaScript variable.
+    } catch (error) {
+      console.error(error);
+    }
+  }
+});
 
 inputElements.forEach((inputElement) => {
   inputElement.addEventListener("change", () => {
