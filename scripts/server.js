@@ -1,39 +1,34 @@
 // ~~~~ SETUP ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Import required modules
 const express = require("express");
-const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
-const cors = require("cors"); // Import the cors package
+const mongoose = require("mongoose");
+const cors = require("cors");
+const TravelDestination = require("./../schemas/DestinationSchema");
 
+// Create Express Application
 const app = express();
 const port = 3000;
 
+// Middleware Setup:
 app.use(express.json({ limit: "10mb", extended: true }));
 app.use(
   express.urlencoded({ limit: "10mb", extended: true, parameterLimit: 50000 })
 );
 
-// Configure CORS to allow requests from your HTML page's domain
+// CORS Configuration
 app.use(cors());
 
-let uri = "mongodb://127.0.0.1:27017";
-
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
+// Database Connection
+mongoose.connect("mongodb://127.0.0.1:27017/travel_log", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
 
-const db = client.db("travel_log");
-const tdCollection = db.collection("travel_destinations");
-
-// ~~~~ GET ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~ GET Route ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 app.get("/travel_destinations", async (req, res) => {
   try {
-    // Fetch data from MongoDB collection
-    const destinations = await tdCollection.find().toArray();
+    const destinations = await TravelDestination.find();
 
-    // Send the data as JSON response
     res.status(200).json(destinations);
   } catch (error) {
     console.error("Error:", error);
@@ -41,9 +36,9 @@ app.get("/travel_destinations", async (req, res) => {
   }
 });
 
-// ~~~ POST ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~ POST Route ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 app.post("/travel_destinations", async (req, res) => {
-  // Extract the country and capital values from the request body
+  // Recieve data from formHandler fetch request
   const {
     country,
     title,
@@ -54,32 +49,39 @@ app.post("/travel_destinations", async (req, res) => {
     description,
   } = req.body;
 
-  // Check if the values are provided
+  // Check if country or title has value
   if (!country || !title) {
     return res
       .status(400)
       .json({ error: "Both country and title are required fields." });
   }
 
-  // Insert the data into the MongoDB collection
-  const result = await tdCollection.insertOne({
-    country: country,
-    title: title,
-    link: link,
-    arrivalDate: arrivalDate,
-    departureDate: departureDate,
-    image: image,
-    description: description,
+  // Create a new instance of the model with the received data
+  const newDestination = new TravelDestination({
+    country,
+    title,
+    link,
+    arrivalDate,
+    departureDate,
+    image,
+    description,
   });
 
-  // Respond with a success message and status code
-  res
-    .status(201)
-    .json({ message: "Destination added successfully!", data: result });
+  // Save the data
+  try {
+    const result = await newDestination.save();
+    res
+      .status(201)
+      .json({ message: "Destination added successfully!", data: result });
+  } catch (error) {
+    console.error("Error:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while adding the destination." });
+  }
 });
 
-// ~~~ SERVER START ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// app.listen is called when you run "node scripts/server.js"
+// ~~~~ Server Start ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
