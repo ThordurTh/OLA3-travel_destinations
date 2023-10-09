@@ -81,6 +81,13 @@ app.post("/travel_destinations", async (req, res) => {
   }
 });
 
+// ~~~~ DELETE Route ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+app.delete("/travel_destinations/:id", (req, res) => {
+  TravelDestination.deleteOne({ _id: req.params.id }).then((result) => {
+    res.status(200).json({ message: "Success" });
+  });
+});
+
 // ~~~~ Server Start ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

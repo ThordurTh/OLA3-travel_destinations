@@ -61,9 +61,8 @@ form.addEventListener("submit", async (e) => {
     const formattedDeparture = dateFormatter(departureDate);
 
     try {
-      if (image) {
-        const imageString = await imageToBase64(image.files[0]);
-      }
+      const imageString = await imageToBase64(image.files[0]);
+
       const options = {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },

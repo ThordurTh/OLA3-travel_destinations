@@ -23,6 +23,7 @@ function cloneTemplate() {
   destinationsData.forEach(async (destination) => {
     const clone = document.importNode(template.content, true);
 
+    clone.querySelector("#delete-destination").classList.add(destination._id);
     if (destination.image) {
       // Convert the base64 image to an actual image element
       const imageBase64 = destination.image;
@@ -46,6 +47,29 @@ function cloneTemplate() {
     }
 
     clone.querySelector(".description").textContent = destination.description;
+
+    const deleteButton = clone.querySelector("#delete-destination");
+    deleteButton.setAttribute("data-id", destination._id);
+
+    deleteButton.addEventListener("click", function () {
+      const travelDestinationId = this.getAttribute("data-id");
+      const articleElement = this.closest("article");
+
+      const options = { method: "DELETE" };
+
+      fetch(
+        `http://localhost:3000/travel_destinations/${travelDestinationId}`,
+        options
+      )
+        .then((response) => response.json())
+        .then((response) => {
+          console.log(response);
+
+          // Remove the corresponding <article> element from the DOM
+          articleElement.remove();
+        })
+        .catch((err) => console.error(err));
+    });
 
     // Append the cloned and updated template to the target div
     destinationDiv.appendChild(clone);
