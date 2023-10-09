@@ -33,10 +33,18 @@ form.addEventListener("submit", async (e) => {
   title = title.charAt(0).toUpperCase() + title.slice(1);
 
   // Check if the country and title are empty
-  if (country.trim() === "" || title.trim() === "") {
-    // Display error messages for both fields
+  if (country.trim() === "") {
     document.getElementById("country-error").textContent =
-      "Country is required.";
+      "*Country is required.";
+  }
+
+  if (title.trim() === "") {
+    document.getElementById("country-error").textContent =
+      "*Title is required.";
+  }
+
+  // Check if either field is empty and prevent form submission
+  if (country.trim() === "" || title.trim() === "") {
     return; // Prevent form submission
   }
 
