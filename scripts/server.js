@@ -3,7 +3,7 @@
 const express = require("express");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
-// const passport = require("./passport-config"); // Import your Passport configuration
+const passport = require("./../passport-config"); // Import your Passport configuration
 const mongoose = require("mongoose");
 const User = require("./../schemas/User");
 const TravelDestination = require("./../schemas/DestinationSchema");

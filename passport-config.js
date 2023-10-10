@@ -6,7 +6,7 @@ const JWTStrategy = passportJWT.Strategy;
 const dotenv = require("dotenv");
 dotenv.config();
 
-const User = require("./User"); // Replace with your User model
+const User = require("./schemas/User"); // Replace with your User model
 
 const jwtOptions = {
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
