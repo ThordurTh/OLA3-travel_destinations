@@ -55,7 +55,13 @@ function cloneTemplate() {
       const travelDestinationId = this.getAttribute("data-id");
       const articleElement = this.closest("article");
 
-      const options = { method: "DELETE" };
+      const options = {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTI1NTgwZjIxMjk1ZmU3ODM5ZGVhM2UiLCJpYXQiOjE2OTY5NTA3MTEsImV4cCI6MTY5Njk1NDMxMX0.KpsLs89qG5shx27tAWNYPMNOUPT3rzJM4WXUabcPIBQ`,
+          "Content-Type": "application/json",
+        },
+      };
 
       fetch(
         `http://localhost:3000/travel_destinations/${travelDestinationId}`,
