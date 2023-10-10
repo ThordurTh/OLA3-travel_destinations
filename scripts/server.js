@@ -1,9 +1,15 @@
 // ~~~~ SETUP ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Import required modules
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
+const jwt = require("jsonwebtoken");
+// const passport = require("./passport-config"); // Import your Passport configuration
+const mongoose = require("mongoose");
+const User = require("./../schemas/User");
 const TravelDestination = require("./../schemas/DestinationSchema");
+const dotenv = require("dotenv");
+const bcrypt = require("bcrypt");
+dotenv.config();
 
 // Create Express Application
 const app = express();
@@ -86,6 +92,60 @@ app.delete("/travel_destinations/:id", (req, res) => {
   TravelDestination.deleteOne({ _id: req.params.id }).then((result) => {
     res.status(200).json({ message: "Success" });
   });
+});
+
+// ~~~~ SIGNUP POST Route ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+app.post("/signup", async (req, res) => {
+  // Recieve data from signupHandler fetch request
+  const { email, password } = req.body;
+
+  // Check if email or password has value
+  if (!email || !password) {
+    return res.status(400).json({ error: "Both fields are required" });
+  }
+
+  try {
+    // Create a new instance of the User model with the hashed password
+    const newUser = new User({
+      email,
+      password,
+    });
+
+    // Save the user data
+    const result = await newUser.save();
+    res.status(201).json({ message: "User added successfully!", data: result });
+  } catch (error) {
+    console.error("Error:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while adding a new user." });
+  }
+});
+
+// ~~~~ LOGIN POST Route ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+app.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Find the user by their email
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(401).json({ error: "Invalid login" });
+    }
+
+    if (await user.isValidPassword(req.body.password)) {
+      const generatedToken = jwt.sign(
+        { _id: user._id },
+        process.env.jwt_secret,
+        { expiresIn: "1h" }
+      );
+      res.status(200).json({ token: generatedToken });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
 
 // ~~~~ Server Start ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
