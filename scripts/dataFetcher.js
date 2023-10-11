@@ -3,7 +3,14 @@ const serverUrl = "http://localhost:3000/travel_destinations";
 let destinationsData;
 
 window.onload = (event) => {
-  fetch(serverUrl)
+  const options = {
+    method: "GET",
+    // headers: {
+    //   Authorization: `Bearer ${localStorage.getItem("token")}`, // Include the JWT token in the Authorization header
+    //   "Content-Type": "application/json", // Specify the content type if needed
+    // },
+  };
+  fetch(serverUrl, options)
     .then((response) => response.json())
     .then((data) => {
       destinationsData = data;
@@ -58,8 +65,8 @@ function cloneTemplate() {
       const options = {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTI1NTgwZjIxMjk1ZmU3ODM5ZGVhM2UiLCJpYXQiOjE2OTY5NTA3MTEsImV4cCI6MTY5Njk1NDMxMX0.KpsLs89qG5shx27tAWNYPMNOUPT3rzJM4WXUabcPIBQ`,
-          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // Include the JWT token in the Authorization header
+          "Content-Type": "application/json", // Specify the content type if needed
         },
       };
 
