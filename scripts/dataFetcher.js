@@ -58,30 +58,56 @@ function cloneTemplate() {
     const deleteButton = clone.querySelector("#delete-destination");
     deleteButton.setAttribute("data-id", destination._id);
 
-    deleteButton.addEventListener("click", function () {
-      const travelDestinationId = this.getAttribute("data-id");
-      const articleElement = this.closest("article");
+    // Add an event listener to handle delete button clicks
+    document.addEventListener("click", function (event) {
+      const deleteButton = event.target.closest("#delete-destination");
 
-      const options = {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`, // Include the JWT token in the Authorization header
-          "Content-Type": "application/json", // Specify the content type if needed
-        },
-      };
+      if (deleteButton) {
+        const travelDestinationId = deleteButton.getAttribute("data-id");
+        const articleElement = deleteButton.closest("article");
 
-      fetch(
-        `http://localhost:3000/travel_destinations/${travelDestinationId}`,
-        options
-      )
-        .then((response) => response.json())
-        .then((response) => {
-          console.log(response);
+        // Show the confirmation dialog
+        const confirmationDialog = document.querySelector(
+          ".confirmation-dialog"
+        );
+        confirmationDialog.style.display = "flex";
 
-          // Remove the corresponding <article> element from the DOM
-          articleElement.remove();
-        })
-        .catch((err) => console.error(err));
+        // Handle the delete action when the user confirms
+        document
+          .getElementById("confirm-delete")
+          .addEventListener("click", function () {
+            // Hide the confirmation dialog
+            confirmationDialog.style.display = "none";
+
+            const options = {
+              method: "DELETE",
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                "Content-Type": "application/json",
+              },
+            };
+
+            fetch(
+              `http://localhost:3000/travel_destinations/${travelDestinationId}`,
+              options
+            )
+              .then((response) => response.json())
+              .then((response) => {
+                console.log(response);
+                // Remove the corresponding <article> element from the DOM
+                articleElement.remove();
+              })
+              .catch((err) => console.error(err));
+          });
+
+        // Cancel the delete action if the user clicks "No" in the confirmation dialog
+        document
+          .getElementById("cancel-delete")
+          .addEventListener("click", function () {
+            // Hide the confirmation dialog
+            confirmationDialog.style.display = "none";
+          });
+      }
     });
 
     // Append the cloned and updated template to the target div

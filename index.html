@@ -1,67 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Travel Destinations</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="style.css" />
-  <title>Travel Destinations</title>
-</head>
-
-<body>
-  <header>
-    <a class="logo" href="#">
-      <img src="assets/logo.png" alt="logo" />
-    </a>
-    <a href="login.html">Log in</a>
-    <a href="signup.html">Sign up</a>
-    <button class="logout">Log out</button>
-  </header>
-  <main>
-    <section>
-      <h1>Destinations</h1>
-      <div class="travel_destinations">
-        <!-- Destinations go here -->
-      </div>
-      <a class="new_destination" href="/new_destination.html">
-        <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <g id="plus-circle">
-            <path id="Vector"
-              d="M12.5 22C18.0228 22 22.5 17.5228 22.5 12C22.5 6.47715 18.0228 2 12.5 2C6.97715 2 2.5 6.47715 2.5 12C2.5 17.5228 6.97715 22 12.5 22Z"
-              stroke="#F5F5F5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            <path id="Vector_2" d="M12.5 8V16" stroke="#F5F5F5" stroke-width="2" stroke-linecap="round"
-              stroke-linejoin="round" />
-            <path id="Vector_3" d="M8.5 12H16.5" stroke="#F5F5F5" stroke-width="2" stroke-linecap="round"
-              stroke-linejoin="round" />
-          </g>
-        </svg>
-        Add Entry</a>
-    </section>
-  </main>
-  <template>
-    <article>
-      <img class="image" src="assets/img1.png" alt="mount fuji" />
-      <div class="info">
-        <div class="location">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill"
-            viewBox="0 0 16 16">
-            <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" />
-          </svg>
-          <span class="country"></span>
-          <a class="link" href="#" target="_blank"></a>
+  <body>
+    <header>
+      <a class="logo" href="#">
+        <img src="assets/logo.png" alt="logo" />
+      </a>
+      <a href="login.html">Log in</a>
+      <a href="signup.html">Sign up</a>
+      <button class="logout">Log out</button>
+    </header>
+    <main>
+      <section>
+        <h1>Destinations</h1>
+        <div class="travel_destinations">
+          <!-- Destinations go here -->
         </div>
-        <h2 class="title"></h2>
-        <span class="date"></span>
-        <p class="description"></p>
+        <a class="new_destination" href="/new_destination.html">
+          <svg
+            width="25"
+            height="24"
+            viewBox="0 0 25 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g id="plus-circle">
+              <path
+                id="Vector"
+                d="M12.5 22C18.0228 22 22.5 17.5228 22.5 12C22.5 6.47715 18.0228 2 12.5 2C6.97715 2 2.5 6.47715 2.5 12C2.5 17.5228 6.97715 22 12.5 22Z"
+                stroke="#F5F5F5"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                id="Vector_2"
+                d="M12.5 8V16"
+                stroke="#F5F5F5"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                id="Vector_3"
+                d="M8.5 12H16.5"
+                stroke="#F5F5F5"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </g>
+          </svg>
+          Add Entry</a
+        >
+      </section>
+    </main>
+    <template>
+      <article>
+        <img class="image" src="assets/img1.png" alt="mount fuji" />
+        <div class="info">
+          <div class="location">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-geo-alt-fill"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"
+              />
+            </svg>
+            <span class="country"></span>
+            <a class="link" href="#" target="_blank"></a>
+          </div>
+          <h2 class="title"></h2>
+          <span class="date"></span>
+          <p class="description"></p>
+        </div>
+        <div class="buttons-container">
+          <a
+            class="new_destination"
+            id="update-destination"
+            style="font-size: 16px"
+            >Update</a
+          >
+          <a
+            class="new_destination"
+            id="delete-destination"
+            style="font-size: 16px"
+            >Delete</a
+          >
+        </div>
+      </article>
+    </template>
+    <div class="confirmation-dialog" style="display: none">
+      <div>
+        <p>Are you sure you want to delete this destination?</p>
+        <button id="confirm-delete">Yes</button>
+        <button id="cancel-delete">No</button>
       </div>
-      <div class="buttons-container">
-        <a class="new_destination" id="update-destination" style="font-size: 16px">Update</a>
-        <a class="new_destination" id="delete-destination" style="font-size: 16px">Delete</a>
-      </div>
-    </article>
-  </template>
-  <script src="scripts/logoutHandler.js"></script>
-  <script src="scripts/dataFetcher.js"></script>
-</body>
-
+    </div>
+    <script src="scripts/logoutHandler.js"></script>
+    <script src="scripts/dataFetcher.js"></script>
+  </body>
 </html>
