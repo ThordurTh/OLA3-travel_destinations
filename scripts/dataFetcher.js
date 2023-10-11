@@ -3,7 +3,14 @@ const serverUrl = "http://localhost:3000/travel_destinations";
 let destinationsData;
 
 window.onload = (event) => {
-  fetch(serverUrl)
+  const options = {
+    method: "GET",
+    // headers: {
+    //   Authorization: `Bearer ${localStorage.getItem("token")}`, // Include the JWT token in the Authorization header
+    //   "Content-Type": "application/json", // Specify the content type if needed
+    // },
+  };
+  fetch(serverUrl, options)
     .then((response) => response.json())
     .then((data) => {
       destinationsData = data;
@@ -55,7 +62,13 @@ function cloneTemplate() {
       const travelDestinationId = this.getAttribute("data-id");
       const articleElement = this.closest("article");
 
-      const options = { method: "DELETE" };
+      const options = {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // Include the JWT token in the Authorization header
+          "Content-Type": "application/json", // Specify the content type if needed
+        },
+      };
 
       fetch(
         `http://localhost:3000/travel_destinations/${travelDestinationId}`,

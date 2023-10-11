@@ -41,6 +41,23 @@ app.get("/travel_destinations", async (req, res) => {
     res.status(500).json({ error: "An error occurred while fetching data." });
   }
 });
+// ~~~~ TEST GET Route ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+app.get(
+  "/travel_destinations/650d77e955004f4e29163f53",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const destinations = await TravelDestination.find({
+        _id: "650d77e955004f4e29163f53",
+      });
+
+      res.status(200).json(destinations);
+    } catch (error) {
+      console.error("Error:", error);
+      res.status(500).json({ error: "An error occurred while fetching data." });
+    }
+  }
+);
 
 // ~~~~ POST Route ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 app.post("/travel_destinations", async (req, res) => {
@@ -88,11 +105,19 @@ app.post("/travel_destinations", async (req, res) => {
 });
 
 // ~~~~ DELETE Route ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-app.delete("/travel_destinations/:id", (req, res) => {
-  TravelDestination.deleteOne({ _id: req.params.id }).then((result) => {
-    res.status(200).json({ message: "Success" });
-  });
-});
+app.delete(
+  "/travel_destinations/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    TravelDestination.deleteOne({ _id: req.params.id }).then((result) => {
+      if (result.deletedCount === 1) {
+        res.status(200).json({ message: "Success" });
+      } else {
+        res.status(404).json({ message: "Not Found" });
+      }
+    });
+  }
+);
 
 // ~~~~ SIGNUP POST Route ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 app.post("/signup", async (req, res) => {
