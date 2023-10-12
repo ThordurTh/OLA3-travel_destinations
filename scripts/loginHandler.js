@@ -28,10 +28,10 @@ loginForm.addEventListener("submit", async (event) => {
       // Successful login; handle the response (e.g., store the token)
       const data = await response.json();
       const token = data.token;
-      console.log(token);
       // You can now store the token and perform any actions for a successful login.
       localStorage.setItem("token", token);
-      console.log(`local storage: ${localStorage.getItem("token")}`);
+      // console.log(`local storage: ${localStorage.getItem("token")}`);
+      window.location.href = "/";
     } else {
       // Handle login failure (e.g., display an error message)
       console.error("Login failed.");

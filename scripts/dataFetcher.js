@@ -5,12 +5,8 @@ let destinationsData;
 window.onload = (event) => {
   const options = {
     method: "GET",
-    // headers: {
-    //   Authorization: `Bearer ${localStorage.getItem("token")}`, // Include the JWT token in the Authorization header
-    //   "Content-Type": "application/json", // Specify the content type if needed
-    // },
   };
-  fetch(serverUrl, options)
+  fetch(serverUrl)
     .then((response) => response.json())
     .then((data) => {
       destinationsData = data;
@@ -56,59 +52,63 @@ function cloneTemplate() {
     clone.querySelector(".description").textContent = destination.description;
 
     const deleteButton = clone.querySelector("#delete-destination");
-    deleteButton.setAttribute("data-id", destination._id);
+    if (localStorage.getItem("token") !== null) {
+      deleteButton.setAttribute("data-id", destination._id);
 
-    // Add an event listener to handle delete button clicks
-    document.addEventListener("click", function (event) {
-      const deleteButton = event.target.closest("#delete-destination");
+      // Add an event listener to handle delete button clicks
+      document.addEventListener("click", function (event) {
+        const deleteButton = event.target.closest("#delete-destination");
 
-      if (deleteButton) {
-        const travelDestinationId = deleteButton.getAttribute("data-id");
-        const articleElement = deleteButton.closest("article");
+        if (deleteButton) {
+          const travelDestinationId = deleteButton.getAttribute("data-id");
+          const articleElement = deleteButton.closest("article");
 
-        // Show the confirmation dialog
-        const confirmationDialog = document.querySelector(
-          ".confirmation-dialog"
-        );
-        confirmationDialog.style.display = "flex";
+          // Show the confirmation dialog
+          const confirmationDialog = document.querySelector(
+            ".confirmation-dialog"
+          );
+          confirmationDialog.style.display = "flex";
 
-        // Handle the delete action when the user confirms
-        document
-          .getElementById("confirm-delete")
-          .addEventListener("click", function () {
-            // Hide the confirmation dialog
-            confirmationDialog.style.display = "none";
+          // Handle the delete action when the user confirms
+          document
+            .getElementById("confirm-delete")
+            .addEventListener("click", function () {
+              // Hide the confirmation dialog
+              confirmationDialog.style.display = "none";
 
-            const options = {
-              method: "DELETE",
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-                "Content-Type": "application/json",
-              },
-            };
+              const options = {
+                method: "DELETE",
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem("token")}`,
+                  "Content-Type": "application/json",
+                },
+              };
 
-            fetch(
-              `http://localhost:3000/travel_destinations/${travelDestinationId}`,
-              options
-            )
-              .then((response) => response.json())
-              .then((response) => {
-                console.log(response);
-                // Remove the corresponding <article> element from the DOM
-                articleElement.remove();
-              })
-              .catch((err) => console.error(err));
-          });
+              fetch(
+                `http://localhost:3000/travel_destinations/${travelDestinationId}`,
+                options
+              )
+                .then((response) => response.json())
+                .then((response) => {
+                  console.log(response);
+                  // Remove the corresponding <article> element from the DOM
+                  articleElement.remove();
+                })
+                .catch((err) => console.error(err));
+            });
 
-        // Cancel the delete action if the user clicks "No" in the confirmation dialog
-        document
-          .getElementById("cancel-delete")
-          .addEventListener("click", function () {
-            // Hide the confirmation dialog
-            confirmationDialog.style.display = "none";
-          });
-      }
-    });
+          // Cancel the delete action if the user clicks "No" in the confirmation dialog
+          document
+            .getElementById("cancel-delete")
+            .addEventListener("click", function () {
+              // Hide the confirmation dialog
+              confirmationDialog.style.display = "none";
+            });
+        }
+      });
+    } else {
+      clone.querySelector(".buttons-container").remove();
+    }
 
     // Append the cloned and updated template to the target div
     destinationDiv.appendChild(clone);

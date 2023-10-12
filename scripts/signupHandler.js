@@ -19,6 +19,7 @@ registerForm.addEventListener("submit", async function (e) {
     const response = await fetch("http://localhost:3000/signup", options);
     const data = await response.json();
     console.log(data);
+    window.location.href = "/login.html";
   } catch (error) {
     console.log(error);
   }

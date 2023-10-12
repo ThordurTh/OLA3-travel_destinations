@@ -32,6 +32,24 @@ header img {
   max-width: 100%;
   width: 290px;
 }
+.logged_out a {
+  padding: 12px 32px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  background: var(--button);
+  color: white;
+  border: 2px solid var(--button);
+  font-size: 16px;
+  text-decoration: none;
+  border: 2px solid var(--button);
+  transition: all 0.3s;
+}
+.logged_out a:hover {
+  background-color: var(--buttonHover);
+  border-color: var(--buttonHover);
+  cursor: pointer;
+}
 
 /* Main */
 main {
@@ -121,6 +139,7 @@ p {
   margin-top: 40px;
   border: 2px solid var(--button);
   transition: all 0.3s;
+  cursor: pointer;
 }
 
 .new_destination:hover {
@@ -257,6 +276,9 @@ button:hover {
   width: 150px;
   align-self: center;
   margin: 0 auto;
+  border: 2px solid var(--button);
+  transition: all 0.3s;
+  cursor: pointer;
 }
 
 .confirmation-dialog {
@@ -298,4 +320,8 @@ button:hover {
 
 .confirmation-dialog button#cancel-delete {
   background-color: var(--button);
+}
+
+.hide {
+  display: none;
 }

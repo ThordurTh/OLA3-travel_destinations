@@ -1,39 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
-    <title>Login</title>
-  </head>
-  <body>
-    <header>
-      <a class="logo" href="index.html">
-        <img src="assets/logo.png" alt="logo" />
-      </a>
-      <a href="login.html">Login</a>
-      <a href="signup.html">Signup</a>
-    </header>
-    <section class="small-form-wrapper">
-      <h1>Login</h1>
-      <form id="login-form">
-        <input
-          type="email"
-          id="login-email"
-          placeholder="Email"
-          name="email"
-          required
-        />
-        <input
-          type="password"
-          id="login-password"
-          placeholder="Password"
-          name="password"
-          required
-        />
-        <button class="action-button" type="submit">Login</button>
-      </form>
-    </section>
-    <script type="module" src="scripts/loginHandler.js"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <title>Login</title>
+</head>
+
+<body>
+  <header>
+    <a class="logo" href="index.html">
+      <img src="assets/logo.png" alt="logo" />
+    </a>
+    <div class="logged_out">
+      <a href="signup.html">Sign up</a>
+    </div>
+    <div class="logged_in">
+      <button class="logout">Log out</button>
+    </div>
+  </header>
+  <section class="small-form-wrapper">
+    <h1>Login</h1>
+    <form id="login-form">
+      <input type="email" id="login-email" placeholder="Email" name="email" required />
+      <input type="password" id="login-password" placeholder="Password" name="password" required />
+      <button class="action-button" type="submit">Login</button>
+    </form>
+  </section>
+  <script src="scripts/logoutHandler.js"></script>
+  <script src="scripts/general.js"></script>
+  <script type="module" src="scripts/loginHandler.js"></script>
+</body>
+
 </html>

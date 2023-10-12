@@ -1,40 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
-    <title>Signup</title>
-  </head>
 
-  <body>
-    <header>
-      <a class="logo" href="index.html">
-        <img src="assets/logo.png" alt="logo" />
-      </a>
-      <a href="login.html">Login</a>
-      <a href="signup.html">Signup</a>
-    </header>
-    <section class="small-form-wrapper">
-      <h1>Sign up</h1>
-      <form id="register-form">
-        <input
-          type="email"
-          id="register-email"
-          placeholder="Email"
-          required
-          name="email"
-        />
-        <input
-          type="password"
-          id="register-password"
-          placeholder="Password"
-          required
-          name="password"
-        />
-        <button class="action-button" type="submit">Register</button>
-      </form>
-    </section>
-    <script type="module" src="scripts/signupHandler.js"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <title>Signup</title>
+</head>
+
+<body>
+  <header>
+    <a class="logo" href="index.html">
+      <img src="assets/logo.png" alt="logo" />
+    </a>
+    <div class="logged_out">
+      <a href="login.html">Log in</a>
+    </div>
+    <div class="logged_in">
+      <button class="logout">Log out</button>
+    </div>
+  </header>
+  <section class="small-form-wrapper">
+    <h1>Sign up</h1>
+    <form id="register-form">
+      <input type="email" id="register-email" placeholder="Email" required name="email" />
+      <input type="password" id="register-password" placeholder="Password" required name="password" />
+      <button class="action-button" type="submit">Register</button>
+    </form>
+  </section>
+  <script src="scripts/general.js"></script>
+  <script type="module" src="scripts/signupHandler.js"></script>
+</body>
+
 </html>
