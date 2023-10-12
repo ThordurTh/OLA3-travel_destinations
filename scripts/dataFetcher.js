@@ -1,6 +1,7 @@
 const serverUrl = "http://localhost:3000/travel_destinations";
 
 let destinationsData;
+let selectedItem;
 
 window.onload = (event) => {
   const options = {
@@ -64,58 +65,61 @@ function cloneTemplate() {
     const deleteButton = clone.querySelector("#delete-destination");
     if (localStorage.getItem("token") !== null) {
       deleteButton.setAttribute("data-id", destination._id);
-      // updateButton.setAttribute("data-id", destination._id);
 
       // Add an event listener to handle delete button clicks
-      document.addEventListener("click", function (event) {
-        const deleteButton = event.target.closest("#delete-destination");
+      deleteButton.addEventListener("click", function () {
+        selectedItem = this.getAttribute("data-id");
+        console.log(selectedItem);
+        confirmationDialog.style.display = "flex";
 
-        if (deleteButton) {
-          const travelDestinationId = deleteButton.getAttribute("data-id");
-          const articleElement = deleteButton.closest("article");
+        // const deleteButton = event.target.closest("#delete-destination");
 
-          // Show the confirmation dialog
-          const confirmationDialog = document.querySelector(
-            ".confirmation-dialog"
-          );
-          confirmationDialog.style.display = "flex";
+        // if (deleteButton) {
+        //   const travelDestinationId = deleteButton.getAttribute("data-id");
+        //   const articleElement = deleteButton.closest("article");
 
-          // Handle the delete action when the user confirms
-          document
-            .getElementById("confirm-delete")
-            .addEventListener("click", function () {
-              // Hide the confirmation dialog
-              confirmationDialog.style.display = "none";
+        //   // Show the confirmation dialog
+        //   const confirmationDialog = document.querySelector(
+        //     ".confirmation-dialog"
+        //   );
+        //   confirmationDialog.style.display = "flex";
 
-              const options = {
-                method: "DELETE",
-                headers: {
-                  Authorization: `Bearer ${localStorage.getItem("token")}`,
-                  "Content-Type": "application/json",
-                },
-              };
+        //   // Handle the delete action when the user confirms
+        //   document
+        //     .getElementById("confirm-delete")
+        //     .addEventListener("click", function () {
+        //       // Hide the confirmation dialog
+        //       confirmationDialog.style.display = "none";
 
-              fetch(
-                `http://localhost:3000/travel_destinations/${travelDestinationId}`,
-                options
-              )
-                .then((response) => response.json())
-                .then((response) => {
-                  console.log(response);
-                  // Remove the corresponding <article> element from the DOM
-                  articleElement.remove();
-                })
-                .catch((err) => console.error(err));
-            });
+        //   const options = {
+        //     method: "DELETE",
+        //     headers: {
+        //       Authorization: `Bearer ${localStorage.getItem("token")}`,
+        //       "Content-Type": "application/json",
+        //     },
+        //   };
 
-          // Cancel the delete action if the user clicks "No" in the confirmation dialog
-          document
-            .getElementById("cancel-delete")
-            .addEventListener("click", function () {
-              // Hide the confirmation dialog
-              confirmationDialog.style.display = "none";
-            });
-        }
+        //   fetch(
+        //     `http://localhost:3000/travel_destinations/${travelDestinationId}`,
+        //     options
+        //   )
+        //     .then((response) => response.json())
+        //     .then((response) => {
+        //       console.log(response);
+        //       // Remove the corresponding <article> element from the DOM
+        //       articleElement.remove();
+        //     })
+        //     .catch((err) => console.error(err));
+        // });
+
+        //   // Cancel the delete action if the user clicks "No" in the confirmation dialog
+        //   document
+        //     .getElementById("cancel-delete")
+        //     .addEventListener("click", function () {
+        //       // Hide the confirmation dialog
+        //       confirmationDialog.style.display = "none";
+        //     });
+        // }
       });
     } else {
       clone.querySelector(".buttons-container").remove();
@@ -154,3 +158,33 @@ function formatDates(dateString1, dateString2) {
 
   return [formattedDate1, formattedDate2];
 }
+
+const confirmationDialog = document.querySelector(".confirmation-dialog");
+const confirmBtn = document.querySelector("#confirm-delete");
+const cancelBtn = document.querySelector("#cancel-delete");
+
+confirmBtn.addEventListener("click", () => {
+  const options = {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "application/json",
+    },
+  };
+
+  fetch(`http://localhost:3000/travel_destinations/${selectedItem}`, options)
+    .then((response) => response.json())
+    .then((response) => {
+      console.log(response);
+      // Remove the corresponding <article> element from the DOM
+      document
+        .querySelector(`[data-id="${selectedItem}"]`)
+        .closest("article")
+        .remove();
+    })
+    .catch((err) => console.error(err));
+  confirmationDialog.style.display = "none";
+});
+cancelBtn.addEventListener("click", () => {
+  confirmationDialog.style.display = "none";
+});
