@@ -41,23 +41,63 @@ app.get("/travel_destinations", async (req, res) => {
     res.status(500).json({ error: "An error occurred while fetching data." });
   }
 });
-// ~~~~ TEST GET Route ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-app.get(
-  "/travel_destinations/650d77e955004f4e29163f53",
-  passport.authenticate("jwt", { session: false }),
-  async (req, res) => {
-    try {
-      const destinations = await TravelDestination.find({
-        _id: "650d77e955004f4e29163f53",
-      });
+// ~~~~ GET a specific route ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+app.get("/travel_destinations/:id", async (req, res) => {
+  try {
+    const destination = await TravelDestination.find({ _id: req.params.id });
 
-      res.status(200).json(destinations);
-    } catch (error) {
-      console.error("Error:", error);
-      res.status(500).json({ error: "An error occurred while fetching data." });
-    }
+    res.status(200).json(destination);
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "An error occurred while fetching data." });
   }
-);
+});
+// ~~~~ Update a specific route ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// PUT Route to update a specific travel destination by ID
+app.put("/travel_destinations/:id", async (req, res) => {
+  const {
+    country,
+    title,
+    link,
+    arrivalDate,
+    departureDate,
+    image,
+    description,
+  } = req.body;
+
+  const updateFields = {
+    country,
+    title,
+    link,
+    arrivalDate,
+    departureDate,
+    image,
+    description,
+  };
+
+  try {
+    // Find the document by ID and update it
+    const updatedDestination = await TravelDestination.findByIdAndUpdate(
+      req.params.id,
+      updateFields,
+      { new: true } // To get the updated document as a response
+    );
+
+    if (!updatedDestination) {
+      return res.status(404).json({ error: "Travel destination not found" });
+    }
+
+    res.json({
+      message: "Destination updated successfully!",
+      data: updatedDestination,
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while updating the destination." });
+  }
+});
 
 // ~~~~ POST Route ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 app.post("/travel_destinations", async (req, res) => {
@@ -162,8 +202,7 @@ app.post("/login", async (req, res) => {
     if (await user.isValidPassword(req.body.password)) {
       const generatedToken = jwt.sign(
         { _id: user._id },
-        process.env.jwt_secret,
-        { expiresIn: "1h" }
+        process.env.jwt_secret
       );
       res.status(200).json({ token: generatedToken });
     }

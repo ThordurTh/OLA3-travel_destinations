@@ -57,11 +57,17 @@ form.addEventListener("submit", async (e) => {
     // Clear any previous error message
     document.getElementById("error-message").textContent = "";
 
-    const formattedArrival = dateFormatter(arrivalDate);
-    const formattedDeparture = dateFormatter(departureDate);
+    // const formattedArrival = dateFormatter(arrivalDate);
+    // const formattedDeparture = dateFormatter(departureDate);
 
     try {
-      const imageString = await imageToBase64(image.files[0]);
+      const fileInput = document.getElementById("image");
+      let imageString;
+      if (fileInput.files.length > 0) {
+        imageString = await imageToBase64(image.files[0]);
+      } else {
+        imageString = "assets/no-image-placeholder.png";
+      }
 
       const options = {
         method: "POST",
@@ -70,8 +76,8 @@ form.addEventListener("submit", async (e) => {
           country: country,
           title: title,
           link: link,
-          arrivalDate: formattedArrival,
-          departureDate: formattedDeparture,
+          arrivalDate: arrivalDate,
+          departureDate: departureDate,
           image: imageString,
           description: description,
         }),
@@ -107,32 +113,32 @@ form.addEventListener("submit", async (e) => {
   }
 });
 
-function dateFormatter(date) {
-  // Convert the date string "YYYY-MM-DD" to an array of ["YYYY", "MM", "DD"]
-  const inputDate = date.split("-");
+// function dateFormatter(date) {
+//   // Convert the date string "YYYY-MM-DD" to an array of ["YYYY", "MM", "DD"]
+//   const inputDate = date.split("-");
 
-  const monthNames = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
+//   const monthNames = [
+//     "Jan",
+//     "Feb",
+//     "Mar",
+//     "Apr",
+//     "May",
+//     "Jun",
+//     "Jul",
+//     "Aug",
+//     "Sep",
+//     "Oct",
+//     "Nov",
+//     "Dec",
+//   ];
 
-  // Format the date as "DD month, YYYY"
-  const formattedDate = `${inputDate[2]} ${
-    monthNames[Number(inputDate[1]) - 1]
-  }, ${inputDate[0]}`;
+//   // Format the date as "DD month, YYYY"
+//   const formattedDate = `${inputDate[2]} ${
+//     monthNames[Number(inputDate[1]) - 1]
+//   }, ${inputDate[0]}`;
 
-  return formattedDate;
-}
+//   return formattedDate;
+// }
 
 // imageToBase64
 const imageToBase64 = (file) =>

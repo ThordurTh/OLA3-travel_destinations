@@ -43,17 +43,28 @@ function cloneTemplate() {
       clone.querySelector(".link").textContent = "View on Google Maps";
     }
     clone.querySelector(".title").textContent = destination.title;
+
+    const [arrivalDate, departureDate] = formatDates(
+      destination.arrivalDate,
+      destination.departureDate
+    );
     if (destination.arrivalDate !== "undefined undefined, ") {
       clone.querySelector(
         ".date"
-      ).textContent = `${destination.arrivalDate} - ${destination.departureDate}`;
+      ).textContent = `${arrivalDate} - ${departureDate}`;
     }
 
     clone.querySelector(".description").textContent = destination.description;
 
+    const updateButton = clone.querySelector("#update-destination");
+    updateButton.addEventListener("click", () => {
+      window.location.href = `/update_destination.html?id=${destination._id}`;
+    });
+
     const deleteButton = clone.querySelector("#delete-destination");
     if (localStorage.getItem("token") !== null) {
       deleteButton.setAttribute("data-id", destination._id);
+      // updateButton.setAttribute("data-id", destination._id);
 
       // Add an event listener to handle delete button clicks
       document.addEventListener("click", function (event) {
@@ -113,4 +124,33 @@ function cloneTemplate() {
     // Append the cloned and updated template to the target div
     destinationDiv.appendChild(clone);
   });
+}
+
+function formatDates(dateString1, dateString2) {
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = monthNames[date.getMonth()];
+    const day = date.getDate().toString().padStart(2, "0");
+    return `${day} ${month}-${year}`;
+  };
+
+  const formattedDate1 = formatDate(dateString1);
+  const formattedDate2 = formatDate(dateString2);
+
+  return [formattedDate1, formattedDate2];
 }
